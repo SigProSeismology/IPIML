@@ -1,9 +1,9 @@
 {
-    "Project": "NEW6",
+    "Project": "Single",
     "InputData": {
         "Datatype": "OnServer",
-        "start_time": "2013-04-09 00:00:00.00",
-        "end_time": "2013-04-10 00:00:00.00",
+        "start_time": "2012-10-09 12:04:00.00",
+        "end_time": "2012-10-09 13:04:00.00",
         "sta_json_name": "station_list.json",
         "data_save_name": "ori_data",
         "DataDownload": {
@@ -30,7 +30,7 @@
     "EqT": {
         "mseed_dir": "ori_data",
         "sta_json_path": "station_list.json",
-        "overlap": 0.9,
+        "overlap": 0.5,
         "n_processor": 8,
         "det_res": "detection_results",
         "model_path": "../models/EqT/EqT_model.h5",
@@ -58,13 +58,13 @@
         "exist_range": 20.0
     },
     "REAL": {
-        "ref_time": "2013-04-09",
+        "ref_time": "2012-10-09",
         "save_sta": "sta_info_real_format.dat",
         "year": [
-            "\"2013\""
+            "\"2012\""
         ],
         "mon": [
-            "\"04\""
+            "\"10\""
         ],
         "day": [
             "\"09\""
@@ -99,7 +99,7 @@
         "tt": {
             "vmodel": "./OnDiskData/velocity_ghana.txt",
             "dir": "traveltime/tt_1km",
-            "build": true
+            "build": false
         },
         "detect": {
             "twind_srch": 180,

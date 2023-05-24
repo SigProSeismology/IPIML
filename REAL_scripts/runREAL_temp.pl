@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
-$year = "2013";
-$mon = "04";
+$year = "2012";
+$mon = "10";
 $day = "09";
 
 $D = "$year/$mon/$day";

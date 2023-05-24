@@ -269,6 +269,9 @@ def seisbench_geneprob(spara):
             annotations2= update_stream_with_SEQT_picks(annotations, spara['seqtpicks'], even_id)
 
 
+            aaaa=1
+
+
 
         
             if annotations.count()>0:  # in case no enough data for a successful prediction

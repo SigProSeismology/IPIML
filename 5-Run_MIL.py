@@ -23,9 +23,6 @@ with open(args.config_file, 'r') as f:
     cfgs = json.load(f)
 task_dir = './' + cfgs['Project'] + '/'
 
-
-
-
 # %% Initialize MALMI
 coseismiq = MALMI(cfgs=cfgs)
 # %% Format input data set

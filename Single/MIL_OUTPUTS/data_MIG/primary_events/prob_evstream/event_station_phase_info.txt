@@ -1,0 +1,2 @@
+# starttime            endtime            station    phase    
+2012-10-09T12:04:04.510000    2012-10-09T12:08:48.950000    5    10
