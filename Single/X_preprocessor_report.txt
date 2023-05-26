@@ -1,6 +1,6 @@
- Station AKOS had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
  Station MRON had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
- Station KLEF had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
- Station SHAI had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
  Station WEIJ had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
  Station KUKU had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
+ Station SHAI had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
+ Station AKOS had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0
+ Station KLEF had 1 chuncks of data, 119 slices were written, 120 were expected. Number of 1-components: 0, Number of 2-components: 0, number of 3-components: 1, original samplieng rate: 100.0

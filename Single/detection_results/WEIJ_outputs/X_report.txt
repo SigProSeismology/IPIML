@@ -1,11 +1,11 @@
 ================== Overal Info ==============================
-date of report: 2023-05-24 09:38:06.160002
+date of report: 2023-05-25 21:03:06.820170
 input_hdf5: ori_data_processed_hdfs//WEIJ.hdf5
 input_csv: ori_data_processed_hdfs//WEIJ.csv
 input_model: well.hdf5
 output_dir: /home/shazam/PycharmProjects/IPIMLTEST/Single/detection_results/WEIJ_outputs
 ================== Prediction Parameters =======================
-finished the prediction in:  0 hours and 0 minutes and 1.38 seconds 
+finished the prediction in:  0 hours and 0 minutes and 2.32 seconds 
 detected: 2 events.
 writting_probability_outputs: False
 loss_types: ['binary_crossentropy', 'binary_crossentropy', 'binary_crossentropy']

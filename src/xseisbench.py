@@ -40,6 +40,7 @@ def get_probability(PICKS, netsta, wave_type):
 
 def update_stream_with_SEQT_picks(stream, direct, ev_id):
     # Read numpy array from the provided address
+    print("Including S-EQT probabilities")
     e_dict = np.load(direct, allow_pickle=True)
     PICKS = e_dict.item().get(str(ev_id))['Picks']
 
@@ -73,8 +74,47 @@ def update_stream_with_SEQT_picks(stream, direct, ev_id):
                 # Calculate the index corresponding to the datetime in the trace
                 index = int((dattime - trace.stats.starttime) * trace.stats.sampling_rate)
 
+                # Set all values in the trace data to zero
+                trace.data.fill(0)
+
+                # Define s as specified
+                s = np.array([0.01, 0.05,0.1,0.175, 0.25, 0.4, 0.6, 0.8, 1, 0.8,0.6, 0.4, 0.25,0.175,0.1, 0.05, 0.01]) * probability
+                # Replace the values in trace.data with the Gaussian distribution
+                if index - 8 >= 0 and index + 8 < len(trace.data):  # Check boundaries
+                    trace.data[index - 8:index + 9] = s
+
+
+        if "EQTransformer_S" in trace.stats.channel:
+            # Get network and station ID
+            netsta = f"{trace.stats.network}.{trace.stats.station}"
+
+            # Determine wave_type based on trace name
+            if trace.stats.channel.endswith("P"):
+                wave_type = "P"
+            elif trace.stats.channel.endswith("S"):
+                wave_type = "S"
+            else:
+                print(f"Unsupported trace name: {trace.stats.channel}")
+                continue
+
+            # Get probability and datetime
+            dattime, probability = get_probability(PICKS, netsta, wave_type)
+
+            if dattime is None or probability is None:
+                print(f"No picks found for {netsta} and wave type {wave_type}")
+                continue
+
+            # Check if datetime falls within trace's start time and end time
+            if trace.stats.starttime <= dattime <= trace.stats.endtime:
+                # Calculate the index corresponding to the datetime in the trace
+                index = int((dattime - trace.stats.starttime) * trace.stats.sampling_rate)
+
                 # Replace the amplitude at the specified index with the probability
-                trace.data[index] = probability
+                trace.data.fill(0)
+                s = np.array([0.01, 0.05,0.1,0.175, 0.25, 0.4, 0.6, 0.8, 1, 0.8,0.6, 0.4, 0.25,0.175,0.1, 0.05, 0.01]) * probability
+                # Replace the values in trace.data with the Gaussian distribution
+                if index - 8 >= 0 and index + 8 < len(trace.data):  # Check boundaries
+                    trace.data[index - 8:index + 9] = s
 
     return stream
 
@@ -266,7 +306,7 @@ def seisbench_geneprob(spara):
             print(os.getcwd())
 
             # annotations= add_seqt_picks(annotations, spara['seqtpicks'],even_id)
-            annotations2= update_stream_with_SEQT_picks(annotations, spara['seqtpicks'], even_id)
+            annotations= update_stream_with_SEQT_picks(annotations, spara['seqtpicks'], even_id)
 
 
             aaaa=1

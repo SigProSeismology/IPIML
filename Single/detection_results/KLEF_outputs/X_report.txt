@@ -1,11 +1,11 @@
 ================== Overal Info ==============================
-date of report: 2023-05-24 09:38:00.938410
+date of report: 2023-05-25 21:03:00.167908
 input_hdf5: ori_data_processed_hdfs//KLEF.hdf5
 input_csv: ori_data_processed_hdfs//KLEF.csv
 input_model: well.hdf5
 output_dir: /home/shazam/PycharmProjects/IPIMLTEST/Single/detection_results/KLEF_outputs
 ================== Prediction Parameters =======================
-finished the prediction in:  0 hours and 0 minutes and 1.2 seconds 
+finished the prediction in:  0 hours and 0 minutes and 1.58 seconds 
 detected: 2 events.
 writting_probability_outputs: False
 loss_types: ['binary_crossentropy', 'binary_crossentropy', 'binary_crossentropy']

@@ -1,12 +1,12 @@
 ================== Overal Info ==============================
-date of report: 2023-05-24 09:37:59.728585
+date of report: 2023-05-25 21:02:58.581931
 input_hdf5: ori_data_processed_hdfs//AKOS.hdf5
 input_csv: ori_data_processed_hdfs//AKOS.csv
 input_model: well.hdf5
 output_dir: /home/shazam/PycharmProjects/IPIMLTEST/Single/detection_results/AKOS_outputs
 ================== Prediction Parameters =======================
-finished the prediction in:  0 hours and 0 minutes and 36.52 seconds 
-detected: 0 events.
+finished the prediction in:  0 hours and 0 minutes and 38.49 seconds 
+detected: 2 events.
 writting_probability_outputs: False
 loss_types: ['binary_crossentropy', 'binary_crossentropy', 'binary_crossentropy']
 loss_weights: [0.02, 0.4, 0.58]

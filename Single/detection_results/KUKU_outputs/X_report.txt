@@ -1,11 +1,11 @@
 ================== Overal Info ==============================
-date of report: 2023-05-24 09:38:02.167113
+date of report: 2023-05-25 21:03:01.507718
 input_hdf5: ori_data_processed_hdfs//KUKU.hdf5
 input_csv: ori_data_processed_hdfs//KUKU.csv
 input_model: well.hdf5
 output_dir: /home/shazam/PycharmProjects/IPIMLTEST/Single/detection_results/KUKU_outputs
 ================== Prediction Parameters =======================
-finished the prediction in:  0 hours and 0 minutes and 1.22 seconds 
+finished the prediction in:  0 hours and 0 minutes and 1.34 seconds 
 detected: 2 events.
 writting_probability_outputs: False
 loss_types: ['binary_crossentropy', 'binary_crossentropy', 'binary_crossentropy']
