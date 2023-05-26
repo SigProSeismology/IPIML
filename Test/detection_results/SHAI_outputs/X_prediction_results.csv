@@ -1,0 +1,2 @@
+file_name,network,station,instrument_type,station_lat,station_lon,station_elv,event_start_time,event_end_time,detection_probability,detection_uncertainty,p_arrival_time,p_probability,p_uncertainty,p_snr,s_arrival_time,s_probability,s_uncertainty,s_snr
+SHAI_GH_HH_2012-10-09T12:05:30.000000Z,GH,SHAI,HH,5.9371,0.0627,107.0,2012-10-09 12:05:55.380000,2012-10-09 12:06:04.610000,0.77,,2012-10-09 12:05:55.440000,0.78,,22.3,2012-10-09 12:06:02.080000,0.44,,10.0

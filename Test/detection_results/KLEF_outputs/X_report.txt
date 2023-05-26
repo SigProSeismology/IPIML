@@ -1,0 +1,26 @@
+================== Overal Info ==============================
+date of report: 2023-05-26 14:13:41.482593
+input_hdf5: ori_data_processed_hdfs//KLEF.hdf5
+input_csv: ori_data_processed_hdfs//KLEF.csv
+input_model: well.hdf5
+output_dir: /home/shazam/PycharmProjects/IPIMLTEST/Test/detection_results/KLEF_outputs
+================== Prediction Parameters =======================
+finished the prediction in:  0 hours and 0 minutes and 1.39 seconds 
+detected: 2 events.
+writting_probability_outputs: False
+loss_types: ['binary_crossentropy', 'binary_crossentropy', 'binary_crossentropy']
+loss_weights: [0.02, 0.4, 0.58]
+batch_size: 500
+================== Other Parameters =========================
+normalization_mode: std
+estimate uncertainty: False
+number of Monte Carlo sampling: 5
+detection_threshold: 0.2
+P_threshold: 0.05
+S_threshold: 0.05
+number_of_plots: 0
+use_multiprocessing: True
+gpuid: 0
+gpu_limit: None
+keepPS: True
+spLimit: 60 seconds

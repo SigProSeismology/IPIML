@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jul 13 16:21:02 2022
-
 Functions related to seisbench.
 
 @author: shipe
+Revised by: Hamzeh Mohammadigheymasi March 2023
 """
 
 

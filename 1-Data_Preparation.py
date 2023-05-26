@@ -1,21 +1,25 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on March 2023
+
+@authors: Xiao Zhuowei, Hamzeh Mohammadigheymasi, Peidong Shi
+"""
+
 """
 Download data from IRIS using obspy and EqT libraries
+Convert the OnDisk data format from the SeisComp format to the EQT format
 """
 import sys
 from obspy.io.stationxml.core import _read_stationxml, _write_stationxml
-
-import json
 import xml.etree.ElementTree as ET
-
 import glob
 from pandas import to_datetime
-
 import fnmatch
 import obspy
 sys.path.append('./src/S_EqT_codes/src/EqT_libs')
 sys.path.append('./srcmalmi')
 from downloader2 import makeStationList, downloadMseeds
-import yaml
 import argparse
 from datetime import datetime
 import os
@@ -23,8 +27,9 @@ import json
 import pandas as pd
 from pathlib import Path
 from obspy.core.utcdatetime import UTCDateTime
-from obspy.clients.filesystem import sds
 from obspy.core.inventory import Inventory, Network, Station, Channel
+
+
 
 
 def stream2EQTinput_raw(stream, dir_output, instrument_code=None, component_code=None, freqband=None, station_code=None):
@@ -82,7 +87,6 @@ def stream2EQTinput_raw(stream, dir_output, instrument_code=None, component_code
     """
 
     timeformat = "%Y%m%dT%H%M%SZ"  # NOTE here output until second
-
     if not instrument_code:  # for None or [] or Flase will reset
         # no input instrument codes
         # search for all available instrument codes in the input stream data
@@ -91,7 +95,6 @@ def stream2EQTinput_raw(stream, dir_output, instrument_code=None, component_code
             if tr.stats.channel[:-1] not in instrument_code:
                 instrument_code.append(tr.stats.channel[:-1])
         del tr
-
     if not component_code:
         # no input component codes
         # search for all available component codes in the input stream data
@@ -100,7 +103,6 @@ def stream2EQTinput_raw(stream, dir_output, instrument_code=None, component_code
             if tr.stats.channel[-1] not in component_code:
                 component_code.append(tr.stats.channel[-1])
         del tr
-
     if not station_code:
         # no input station codes
         # scan all traces to get the station names
@@ -110,18 +112,13 @@ def stream2EQTinput_raw(stream, dir_output, instrument_code=None, component_code
             if sname not in station_code:
                 station_code.append(sname)
         del tr
-
     # for a particular station, first check starttime and endtime, then output data
     for ista in station_code:
         # select and output data for a perticular station
-
         stdata_ista = stream.select(station=ista)  # data for this station
-
         for iinstru in instrument_code:
             # select and output data for a perticular instrument code
-
             ista_save = False  # flag to indicate whether data of this station have been saved
-
             # scan different channels for getting a unified time range (choose the wider one) at a perticular station
             stdata = stdata_ista.select(channel=iinstru + '*')  # stream data of an instrument code
             if stdata.count() > 0:
@@ -134,11 +131,9 @@ def stream2EQTinput_raw(stream, dir_output, instrument_code=None, component_code
                         starttime = min(starttime, tr.stats.starttime)
                         endtime = max(endtime, tr.stats.endtime)
                     dcount += 1
-
                 # round datetime to the nearest second, and convert to the setted string format
                 starttime_str = to_datetime(starttime.datetime).round('1s').strftime(timeformat)
                 endtime_str = to_datetime(endtime.datetime).round('1s').strftime(timeformat)
-
                 # Output data for each station and each channel
                 # For a particular station, the three channel (if there are) share
                 # the same time range in the final output filename.
@@ -154,20 +149,16 @@ def stream2EQTinput_raw(stream, dir_output, instrument_code=None, component_code
                             #               zerophase=True)
                             # trdata.taper(max_percentage=0.001, type='cosine',
                             #              max_length=1)  # to avoid anormaly at bounday
-
                         # creat a folder for each station and output data in the folder
                         # the data from the same station are output to the same folder
                         dir_output_sta = os.path.join(dir_output, ista)
                         if not os.path.exists(dir_output_sta):
                             os.makedirs(dir_output_sta)
-
                         OfileName = trdata[0].id + '__' + starttime_str + '__' + endtime_str + '.mseed'
                         trdata.write(os.path.join(dir_output_sta, OfileName), format="MSEED")
                         ista_save = True
-
             if ista_save:
                 break  # already save data for this station, no need to look for the next instrument code
-
     return
 def makeStationListOnDisk(inventory, file_name,channel_list,
                     filter_network=[], filter_station=[]):
@@ -212,8 +203,6 @@ def makeStationListOnDisk(inventory, file_name,channel_list,
    stations_list.json: A dictionary containing information for the available stations.
 
     """
-
-
     station_list = {}
     for ev in inventory:
         net = ev.code
@@ -229,11 +218,8 @@ def makeStationListOnDisk(inventory, file_name,channel_list,
                                               "channels": list(set(new_chan)),
                                               "coords": [lat, lon, elv]
                                               }
-
     with open(file_name, 'w') as fp:
         json.dump(station_list, fp)
-
-
 def format_SDS(seisdate, stainv, dir_seismic, dir_output, instrument_code=["HH", "BH", "EH", "SH", "HG", "HN"],
                location_code=['', '00', 'R1', 'BT', 'SF', '*'], freqband=None, split=False):
     """
@@ -241,11 +227,9 @@ def format_SDS(seisdate, stainv, dir_seismic, dir_output, instrument_code=["HH",
     can be feed to various ML models.
     Seismic data sets are formated per station.
     Suitable for formatting large or long-duration data set.
-
     SDS fromat of data archiving structure:
         year/network_code/station_code/channel_code.D/network_code.station_code.location_code.channel_code.D.year.day_of_year
         for example: 2020/CH/VDR/HHZ.D/CH.VDR..HHZ.D.2020.234
-
     Instrument code has a higher priority than location code.
     Both instrument code list and location code list are priority code list, the
     program will try load only one instrument code and one location code, the code
@@ -387,7 +371,6 @@ def format_SDS(seisdate, stainv, dir_seismic, dir_output, instrument_code=["HH",
                             if isinstance(split, dict):
                                 stream = stream_split_gaps(stream, mask_value=split['mask_value'],
                                                            minimal_continous_points=split['minimal_continous_points'])
-
                             stream2EQTinput_raw(stream=stream, dir_output=dir_output, instrument_code=None,
                                             freqband=freqband)
                             break  # already find and output data for this instrument code, no need to look at the rest instrument codes
@@ -397,45 +380,35 @@ def format_SDS(seisdate, stainv, dir_seismic, dir_output, instrument_code=["HH",
                                 'No data found at station {} for the specified instrument codes {}, date {} and location code {}!'.format(
                                     station.code, instrument_code, seisdate, location_code))
                             del stream
-
                     else:
                         warnings.warn(
                             'More than 3 folders ({}) found for the instrument code {}! Pass!'.format(dir_chalevel,
                                                                                                       iinstru))
-
             else:
                 # station folder does not exist, no data
                 warnings.warn('No data found for: {}! Pass!'.format(dir_stalevel))
-
     return
 def read_stainv_csv(file_stainv):
     """
     Read the csv format station inventory file, and format it to obspy station inventory object.
-
     Each peculiar station is identified by network.station.location.instrument (such as: TA.N59A..BH)
-
     The input CSV file using ',' as the delimiter in which the first row
     is column name and must contain: 'network', 'station', 'latitude',
     'longitude', 'elevation'. Latitude and longitude are in decimal degree
     and elevation in meters relative to the sea-level (positive for up).
-
     Other optional colume names are:
     location: location code of station, such as "00", "", "01". Default: "".
     depth: the local depth or overburden of the instruments location in meter. Default: 0.
     instrument: instrument code, such as "SH", "HH", "BH", "FP";
     component: component code, shch as "ZNE", "Z12";
-
     Parameters
     ----------
     file_stainv : str
         filename of the input station inventory of csv format.
-
     Returns
     -------
     stainv : obspy station inventory object.
-
     """
-
     stainv = Inventory(networks=[])
     stadf = pd.read_csv(file_stainv, delimiter=',', encoding='utf-8',
                         header="infer", skipinitialspace=True)
@@ -523,17 +496,7 @@ def import_xml_files_to_a_function(folder_path,station_inv_output):
                 tree.write(fname)
                 _write_stationxml(invvvv, fname, validate=False,
                                   nsmap=None, level="response")
-
-
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser(description='Data_Preparation')
-    # parser.add_argument('--config-file', dest='config_file',
-    #                     type=str, help='Configuration file path',default='./Configuration_Parameters.yaml')
-    # args = parser.parse_args()
-    # cfgs = yaml.load(open(args.config_file,'r'),Loader=yaml.SafeLoader)
-    #
-    # task_dir = './' + cfgs['Project'] + '/'
-
     parser = argparse.ArgumentParser(description='1-Data_Preparation')
     parser.add_argument('--config-file', dest='config_file', type=str, help='Configuration file path',
                         default='./Configuration_Parameters.json')
@@ -541,7 +504,6 @@ if __name__ == '__main__':
     with open(args.config_file, 'r') as f:
         cfgs = json.load(f)
     task_dir = './' + cfgs['Project'] + '/'
-
     if os.path.exists(task_dir):
         pass
     else:
@@ -583,7 +545,6 @@ if __name__ == '__main__':
                        chunk_size=1,
                        channel_list=CHANLIST,
                        n_processor=1)
-
         # remove empty folders
         mseed_path = Path(DATASAVEPATH)
         for sub_path in mseed_path.glob('*'):
@@ -591,25 +552,14 @@ if __name__ == '__main__':
                 print('Remove Empty Folder: {}'.format(str(sub_path)))
                 os.rmdir(str(sub_path))
     elif cfgs['InputData']['Datatype']== 'OnDisk':
-
-
-
-
-
         stanvv= read_stainv_csv(cfgs['InputData']['DataFormat']['station_inv'])
         parent_directory= cfgs['InputData']['DataFormat']['dir_seismic_input']
         ch_list = cfgs['InputData']['DataFormat']['instrument_code']
-
         fd=STIME;
         floatdate=UTCDateTime(fd)
-
         import_xml_files_to_a_function(cfgs['InputData']['DataFormat']['station_inv_input'],cfgs['Project'])
-
-
         while UTCDateTime(floatdate)<UTCDateTime(ETIME):
             makeStationListOnDisk(stanvv,task_dir+'station_list.json', ch_list)
-
-
             # assuming you have a UTCDateTime object called utc_dt
             dt = datetime.utcfromtimestamp(floatdate.timestamp)
             # stream = sds()
@@ -618,14 +568,3 @@ if __name__ == '__main__':
                        dir_seismic=cfgs['InputData']['DataFormat']['dir_seismic_input'], dir_output=DATASAVEPATH,
                        instrument_code=['HH', 'BH', 'EH', 'SH', 'HG'], freqband=cfgs['InputData']['DataFormat']['freqband'], split=False)
             floatdate=floatdate+86400
-            # print("I love you")
-
-
-
-
-        # format_ML_inputs(cfgs)
-
-
-
-
-    # set download params

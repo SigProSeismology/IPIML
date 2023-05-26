@@ -1,3 +1,16 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on March 2023
+
+@authors: Xiao Zhuowei, Hamzeh Mohammadigheymasi
+"""
+
+"""
+Runs EQT on the prepared data from the step 1- Data_preparation, and detect P and S phases for all the stations
+"""
+
+
 import warnings
 warnings.filterwarnings("ignore")
 from tensorflow.python.util import deprecation
@@ -14,9 +27,9 @@ from keras.models import load_model
 from keras.optimizers import Adam
 import json
 import os
-from multiprocessing import  Pool
 import argparse
 from pathlib import Path
+
 
 def convert(cfgs):
     mseed_dir = cfgs['EqT']['mseed_dir']
@@ -30,13 +43,6 @@ def convert(cfgs):
     return 1
 
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser(description='1_run_EqT')
-    # parser.add_argument('--config-file', dest='config_file',
-    #                     type=str, help='Configuration file path',default='./Configuration_Parameters.yaml')
-    # args = parser.parse_args()
-    # cfgs = yaml.load(open(args.config_file,'r'),Loader=yaml.SafeLoader)
-    # task_dir = './' + cfgs['Project'] + '/'
-
     parser = argparse.ArgumentParser(description='2-run_EqT')
     parser.add_argument('--config-file', dest='config_file', type=str, help='Configuration file path',
                         default='./Configuration_Parameters.json')
@@ -44,10 +50,7 @@ if __name__ == '__main__':
     with open(args.config_file, 'r') as f:
         cfgs = json.load(f)
     task_dir = './' + cfgs['Project'] + '/'
-
-
     os.chdir(task_dir)
-    
     # earthquake detection and phase picking by the EqT model
     os.environ['CUDA_VISIBLE_DEVICES']  = cfgs['EqT']['gpuid']
     import tensorflow as tf
@@ -56,10 +59,6 @@ if __name__ == '__main__':
         gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=gpu_fraction)
         return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
     KTF.set_session(get_session())
-    
-
-    # convert mseed data to hdf5
-    
     convert(cfgs)
     print(' *** Loading the model ...', flush=True)        
     model = load_model(cfgs['EqT']['model_path'],
@@ -68,13 +67,11 @@ if __name__ == '__main__':
                                        'LayerNormalization': LayerNormalization, 
                                        'f1': f1                                                                            
                                         })
-
     model.compile(loss = ['binary_crossentropy', 'binary_crossentropy', 'binary_crossentropy'],
                   loss_weights = [0.03, 0.40, 0.58],       
                   optimizer = Adam(lr = 0.001),
                   metrics = [f1])
     print('Done Loading Model')
-    
     predictor(input_dir= cfgs['EqT']['mseed_dir'] + '_processed_hdfs/',
             input_model=model,
             output_dir=cfgs['EqT']['det_res'],
@@ -91,7 +88,6 @@ if __name__ == '__main__':
             number_of_cpus=4,
             keepPS=True,
             spLimit=60)
-    
     # convert xml and csv files for S-EqT and REAL
     xml2REAL_sta(cfgs)
     det_folder = Path(cfgs['EqT']['det_res'])

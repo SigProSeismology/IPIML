@@ -1,11 +1,22 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on March 2023
+
+@authors: Xiao Zhuowei
+"""
+
+"""
+Runs S-EQT on a station pairwise manner on other stations when the main station detects a phase with a probability > 0.8
+"""
+
+
 import numpy as np
 from pathlib import Path
 import pandas as pd
 import h5py
-import matplotlib.pyplot as plt
 import obspy
 import bisect
-from pyproj import Geod
 import sys
 sys.path.append('./src/S_EqT_codes/src')
 sys.path.append('./src/S_EqT_codes/src/EqT_libs')
@@ -17,9 +28,9 @@ import keras
 keras.backend.set_floatx('float32')
 import json
 import yaml
-from random import shuffle
 import os
 import argparse
+
 
 # Simplified steps:
 # 01 load config file
@@ -27,13 +38,6 @@ import argparse
 # 03 save results
 
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser(description='2_run_S-EqT')
-    # parser.add_argument('--config-file', dest='config_file',
-    #                     type=str, help='Configuration file path',default='./Configuration_Parameters.yaml')
-    # args = parser.parse_args()
-    # cfgs = yaml.load(open(args.config_file,'r'),Loader=yaml.SafeLoader)
-    # task_dir = './' + cfgs['Project'] + '/'
-
     parser = argparse.ArgumentParser(description='3-run_S-EqT')
     parser.add_argument('--config-file', dest='config_file', type=str, help='Configuration file path',
                         default='./Configuration_Parameters.json')
@@ -41,8 +45,6 @@ if __name__ == '__main__':
     with open(args.config_file, 'r') as f:
         cfgs = json.load(f)
     task_dir = './' + cfgs['Project'] + '/'
-
-
     os.chdir(task_dir)
 
     import tensorflow as tf

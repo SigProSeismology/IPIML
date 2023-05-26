@@ -1,0 +1,3 @@
+file_name,network,station,instrument_type,station_lat,station_lon,station_elv,event_start_time,event_end_time,detection_probability,detection_uncertainty,p_arrival_time,p_probability,p_uncertainty,p_snr,s_arrival_time,s_probability,s_uncertainty,s_snr
+WEIJ_GH_HH_2012-10-09T12:05:00.000000Z,GH,WEIJ,HH,5.5885,-0.3333,203.0,2012-10-09 12:05:48.470000,2012-10-09 12:05:50.710000,0.95,,2012-10-09 12:05:48.490000,0.89,,38.4,2012-10-09 12:05:50.090000,0.79,,8.1
+WEIJ_GH_HH_2012-10-09T12:20:00.000000Z,GH,WEIJ,HH,5.5885,-0.3333,203.0,2012-10-09 12:20:12.620000,2012-10-09 12:20:15.090000,0.46,,2012-10-09 12:20:12.590000,0.51,,15.5,2012-10-09 12:20:14.350000,0.6,,9.8

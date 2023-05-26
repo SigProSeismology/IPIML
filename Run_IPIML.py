@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Aug 10 21:13:03 2023
-@author: Hamzeh Mohammadigheymasi, Peidong Shi
+@author: Hamzeh Mohammadigheymasi, Peidong Shi, Xiao Zhuowei
 """
 
 
@@ -16,6 +16,6 @@ import subprocess
 # subprocess.run(['python', './4-Run_REAL.py'],)
 # subprocess.run(['conda', 'deactivate'], shell=True)
 # subprocess.run(['conda', 'activate', 'malmi'], shell=True)
-# subprocess.run(["python", "5-Run_MIL.py"])
+subprocess.run(["python", "5-Run_MIL.py"])
 # sys.path.append('/home/shazam/PycharmProjects/IPIMLTEST/srcmalmi')  # user need to change the path here!
 # import subprocess

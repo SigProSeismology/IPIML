@@ -13,7 +13,7 @@ We implement the IPIML workflow in six steps, using two conda environments: ESR 
 ## Installation
 The installation guides for these environments are provided below:
 
-# ESR envoronment:
+# EQT-SEQT-REAL (ESR) envoronment:
 Create and activate a conda environment, ESR for detecting the primary events:
 If you want to process with CPU:
 ```bash
@@ -30,7 +30,7 @@ conda config --set channel_priority strict
 conda create -n ESR python=3.7 tensorflow-gpu=1.14 keras-gpu=2.3.1 h5py=2.10 obspy spyder==5.0.3 pygmt matplotlib=3.2 pyyaml pandas tqdm pyproj jupyter notebook basemap six~=1.15.0 numpy~=1.19.2 protobuf'<3.20,>=3.9.2'
 pip install keras-rectified-adam
 ```
-# MIL envoronment:
+# MIGRATION LOCATION (MIL) envoronment:
 Create and activate a conda environment, MIL for locating the primary events:
 ```bash
 conda config --add channels conda-forge
@@ -43,54 +43,41 @@ pip install seisbench
 ### Install loki (GNU gcc compiler and openmp required)
 ```bash
 git clone https://github.com/speedshi/LOKI.git
+conda activate MIL
 cd WHERE_LOKI_IS_STORED
 pip install .
 ```
 
-### Install MALMI 
+### Install IPIML 
 ```bash
-git clone https://github.com/speedshi/MALMI.git
-```
-
-### Install NonLinLoc if you want to generate travetime tables in MALMI (optional)
-Currently only *Vel2Grid* and *Grid2Time* programs are used and remember to put them in a executable path after compiling NonLinLoc. 
-There are two ways to install NonLinLoc:
-
-1. Through [NonLinLoc GitHub Page](https://github.com/alomax/NonLinLoc) (Recomended) 
-Install example:
-```bash
-git clone https://github.com/alomax/NonLinLoc.git
-cd NonLinLoc/src
-mkdir bin   # bin/ is a subdirectory of src/
-cmake .
-make
-echo 'export PATH="WHERE_CODE_IS_STORED/NonLinLoc/src/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-2. Follow [NonLinLoc Home Page](http://alomax.free.fr/nlloc/) for installing the NonLinLoc software. 
-Install example:
-```bash
-wget http://alomax.free.fr/nlloc/soft7.00/tar/NLL7.00_src.tgz
-mv NLL7.00_src.tgz WHERE_CODE_IS_STORED
-cd WHERE_CODE_IS_STORED
-mkdir NLL
-tar -xzvf NLL7.00_src.tgz -C ./NLL
-cd ./NLL/src
-make -R distrib
-echo 'export PATH="WHERE_CODE_IS_STORED/NLL/src:$PATH"' >> ~/.bashrc
-source ~/.bashrc
+git clone https://github.com/speedshi/MALMI.git](https://github.com/SigProSeismology/IPIML.git
 ```
 
 ## Usage 
-Follow the [user manual page](https://github.com/speedshi/MALMI/blob/main/user_manual.md) to use MALMI. 
 
-## Reference 
+Optimized Deep Learning (DL)-based workflows can improve the efficiency and accuracy of earthquake detection and location processes. IPIML is a six-step automated event detection, phase association, and earthquake location workflow, which integrates the state-of-the-art Pair-Input DL model and waveform Migration Location methods (IPIML). 
+
+ 
+
+## To cite: 
 Please cite the following paper in your documents if you use MALMI in your work. 
-Peidong Shi, Francesco Grigoli, Federica Lanza, Gregory C. Beroza, Luca Scarabello, Stefan Wiemer; MALMI: An Automated Earthquake Detection and Location Workflow Based on Machine Learning and Waveform Migration. Seismological Research Letters 2022; doi: [https://doi.org/10.1785/0220220071](https://doi.org/10.1785/0220220071)
+
+In case you utilize IPIML for processing your data, it would be appreciated if you cite the following paper(s):
+
 
 BibTex:
 ```
+@article{mohammadigheymasi2023ipiml,
+  title={IPIML: A deep-scan earthquake detection and location workflow Integrating Pair-Input deep learning model and Migration Location method},
+  author={Mohammadigheymasi, Hamzeh and Shi, Peidong and Tavakolizadeh, Nasrin and Xiao, Zhuowei and Mousavi, S. Mostafa and Matias, Luis and Pourvahab, Mehran and Fernandes, Rui},
+  journal={IEEE Transactions on Geoscience and Remote Sensing},
+  volume={XX},
+  number={XX},
+  pages={XX--XX},
+  year={2023},
+  doi={XX.XXXX/XXXXXXX}
+}
+
 @article{xiao2021siamese,
   title={Siamese earthquake transformer: A pair-input deep-learning model for earthquake detection and phase picking on a seismic array},
   author={Xiao, Zhuowei and Wang, Jian and Liu, Chang and Li, Juan and Zhao, Liang and Yao, Zhenxing},
@@ -113,6 +100,17 @@ BibTex:
     eprint = {https://pubs.geoscienceworld.org/ssa/srl/article-pdf/doi/10.1785/0220220071/5602568/srl-2022071.1.pdf},
 }
 
+@article{mousavi2020earthquake,
+  title={Earthquake transformer—an attentive deep-learning model for simultaneous earthquake detection and phase picking},
+  author={Mousavi, S Mostafa and Ellsworth, William L and Zhu, Weiqiang and Chuang, Lindsay Y and Beroza, Gregory C},
+  journal={Nature communications},
+  volume={11},
+  number={1},
+  pages={3952},
+  year={2020},
+  publisher={Nature Publishing Group UK London}
+}
+
 
 
 ```
@@ -127,10 +125,6 @@ If you have any questions about the usage of this package or find bugs in the co
 ## Contact information 
 Copyright(C) 2023 Hamzeh Mohammadigheymasi 
 Author: Hamzeh Mohammadigheymasi (hamzeh@ubi.pt), Peidong Shi (peidong.shi@sed.ethz.ch), and Xiao Zhuowei  (xiaozhuowei@mail.iggcas.ac.cn)
-Email: , , 
-
-
-
 
 
 

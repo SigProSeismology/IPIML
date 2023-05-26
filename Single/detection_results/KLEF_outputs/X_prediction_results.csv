@@ -1,3 +1,0 @@
-file_name,network,station,instrument_type,station_lat,station_lon,station_elv,event_start_time,event_end_time,detection_probability,detection_uncertainty,p_arrival_time,p_probability,p_uncertainty,p_snr,s_arrival_time,s_probability,s_uncertainty,s_snr
-KLEF_GH_HH_2012-10-09T12:06:00.000000Z,GH,KLEF,HH,6.6142,0.4407,313.0,2012-10-09 12:06:08.620000,2012-10-09 12:06:32.840000,0.98,,2012-10-09 12:06:08.780000,0.45,,12.5,2012-10-09 12:06:25.670000,0.29,,10.2
-KLEF_GH_HH_2012-10-09T12:14:00.000000Z,GH,KLEF,HH,6.6142,0.4407,313.0,2012-10-09 12:14:18.180000,2012-10-09 12:14:31.100000,0.36,,2012-10-09 12:14:18.140000,0.34,,14.5,2012-10-09 12:14:27.490000,0.14,,1.9

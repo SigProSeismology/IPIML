@@ -1,5 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on March 2023
+
+@authors: Xiao Zhuowei, Hamzeh Mohammadigheymasi
+"""
+
+
+"""
+Runs REAL algorithm on the detected phases by S-EQT to associate phases to earthquakes, and make the list of primary earthquakes, and generates their waveform for MIL method. 
+
+"""
+
 import obspy
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import glob
@@ -7,9 +20,7 @@ from obspy import read, UTCDateTime
 from datetime import datetime
 import os
 import json
-from pathlib import Path
 import re
-import sys
 import argparse
 
 def search_value(file_path, search_key):
@@ -75,10 +86,6 @@ def Primary_events(event_file,freqband):
         dt = datetime.strptime(evedate, '%Y-%m-%d-%H:%M:%S.%f')
         evedate=dt.strftime('%Y-%m-%d-%H-%M-%S')
         output_directory_path= './'+cfgs['MIL']['control']['dir_output']+'/data_ML/primary_events/mseeds/'+evedate
-
-
-            # 'primary_events'+ '/'+evedate
-        # # convert datetime object to output format
         start_time_str = dt.strftime('%Y%m%dT%H%M%SZ')
         stt = UTCDateTime(start_time_str) - 30
         start_time_str= stt.strftime('%Y%m%dT%H%M%SZ')
@@ -176,8 +183,6 @@ def merge_phasesel(cfgs):
             e_dict[e_ID]['Picks'].append([sta_name, pick_type, pick_time,probab])
     f_sel.close()
     np.save('{}/seqt_real_e_dict.npy'.format(cfgs['REAL']['seqt_catalog_dir']), e_dict)
-    # e2_dict= np.load('{}/seqt_real_e_dict.npy'.format(cfgs['REAL']['seqt_catalog_dir']))
-    e2_dict= np.load('{}/seqt_real_e_dict.npy'.format(cfgs['REAL']['seqt_catalog_dir']), allow_pickle=True)
     return
 
 
@@ -224,15 +229,6 @@ def pad_empty_sta(cfgs):
 
 
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser(description='4-run_REAL')
-    # parser.add_argument('--config-file', dest='config_file',
-    #                     type=str, help='Configuration file path', default='./Configuration_Parameters.yaml')
-    # args = parser.parse_args()
-    # cfgs = yaml.load(open(args.config_file, 'r'), Loader=yaml.SafeLoader)
-    # task_dir = './' + cfgs['Project'] + '/'
-
-
-
     parser = argparse.ArgumentParser(description='4-run_REAL')
     parser.add_argument('--config-file', dest='config_file', type=str, help='Configuration file path',
                         default='./Configuration_Parameters.json')
@@ -240,14 +236,7 @@ if __name__ == '__main__':
     with open(args.config_file, 'r') as f:
         cfgs = json.load(f)
     task_dir = './' + cfgs['Project'] + '/'
-
-
-
     os.chdir(task_dir)
     pad_empty_sta(cfgs)
     runREAL(cfgs)
     merge_phasesel(cfgs)
-
-
-
-

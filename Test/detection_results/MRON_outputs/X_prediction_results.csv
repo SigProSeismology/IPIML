@@ -1,0 +1,2 @@
+file_name,network,station,instrument_type,station_lat,station_lon,station_elv,event_start_time,event_end_time,detection_probability,detection_uncertainty,p_arrival_time,p_probability,p_uncertainty,p_snr,s_arrival_time,s_probability,s_uncertainty,s_snr
+MRON_GH_HH_2012-10-09T12:06:00.000000Z,GH,MRON,HH,6.4647,-1.4371,361.0,2012-10-09 12:06:12.410000,2012-10-09 12:06:37.920000,0.96,,2012-10-09 12:06:13.040000,0.24,,0.9,2012-10-09 12:06:30.640000,0.5,,6.0
