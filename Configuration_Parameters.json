@@ -1,9 +1,9 @@
 {
-    "Project": "Test",
+    "Project": "TEST",
     "InputData": {
         "Datatype": "OnServer",
         "start_time": "2012-10-09 12:04:00.00",
-        "end_time": "2012-10-09 13:04:00.00",
+        "end_time": "2012-10-10 12:04:00.00",
         "sta_json_name": "station_list.json",
         "data_save_name": "ori_data",
         "DataDownload": {
@@ -30,7 +30,7 @@
     "EqT": {
         "mseed_dir": "ori_data",
         "sta_json_path": "station_list.json",
-        "overlap": 0.5,
+        "overlap": 0.9,
         "n_processor": 8,
         "det_res": "detection_results",
         "model_path": "../models/EqT/EqT_model.h5",

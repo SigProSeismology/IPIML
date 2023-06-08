@@ -3,13 +3,12 @@
 """
 Created on March 2023
 
-@authors: Xiao Zhuowei, Hamzeh Mohammadigheymasi
+@authors: Hamzeh Mohammadigheymasi, Xiao Zhuowei
 """
 
 """
 Runs EQT on the prepared data from the step 1- Data_preparation, and detect P and S phases for all the stationsConvert the OnDisk data format from the SeisComp format to the EQT format
 """
-
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -29,7 +28,20 @@ import json
 import os
 import argparse
 from pathlib import Path
+import tensorflow as tf
 
+def set_gpu_memory_fraction(gpu_fraction):
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            tf.config.set_logical_device_configuration(
+                gpus[0],
+                [tf.config.LogicalDeviceConfiguration(memory_limit=gpus[0].memory_limit * gpu_fraction)])
+            logical_gpus = tf.config.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+        except RuntimeError as e:
+            # Virtual devices must be set at program startup
+            print(e)
 
 def convert(cfgs):
     mseed_dir = cfgs['EqT']['mseed_dir']
@@ -53,43 +65,30 @@ if __name__ == '__main__':
     os.chdir(task_dir)
     # earthquake detection and phase picking by the EqT model
     os.environ['CUDA_VISIBLE_DEVICES']  = cfgs['EqT']['gpuid']
-    import tensorflow as tf
-    import keras.backend.tensorflow_backend as KTF
-    def get_session(gpu_fraction=0.5):
-        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=gpu_fraction)
-        return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-
-
-
-
-
-
-
-    
-    KTF.set_session(get_session())
+    set_gpu_memory_fraction(0.5)
     convert(cfgs)
-    print(' *** Loading the model ...', flush=True)        
+    print(' *** Loading the model ...', flush=True)
     model = load_model(cfgs['EqT']['model_path'],
-                       custom_objects={'SeqSelfAttention': SeqSelfAttention, 
+                       custom_objects={'SeqSelfAttention': SeqSelfAttention,
                                        'FeedForward': FeedForward,
-                                       'LayerNormalization': LayerNormalization, 
-                                       'f1': f1                                                                            
+                                       'LayerNormalization': LayerNormalization,
+                                       'f1': f1
                                         })
     model.compile(loss = ['binary_crossentropy', 'binary_crossentropy', 'binary_crossentropy'],
-                  loss_weights = [0.03, 0.40, 0.58],       
+                  loss_weights = [0.03, 0.40, 0.58],
                   optimizer = Adam(lr = 0.001),
                   metrics = [f1])
     print('Done Loading Model')
     predictor(input_dir= cfgs['EqT']['mseed_dir'] + '_processed_hdfs/',
             input_model=model,
             output_dir=cfgs['EqT']['det_res'],
-            estimate_uncertainty=False, 
+            estimate_uncertainty=False,
             output_probabilities=False,
             number_of_sampling=cfgs['EqT']['number_of_sampling'],
-            loss_weights=[0.02, 0.40, 0.58],          
-            detection_threshold=cfgs['EqT']['EQ_threshold'],                
+            loss_weights=[0.02, 0.40, 0.58],
+            detection_threshold=cfgs['EqT']['EQ_threshold'],
             P_threshold=cfgs['EqT']['P_threshold'],
-            S_threshold=cfgs['EqT']['S_threshold'], 
+            S_threshold=cfgs['EqT']['S_threshold'],
             number_of_plots=0,
             plot_mode='time',
             batch_size=500,gpuid=0,

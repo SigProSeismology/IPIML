@@ -1,4 +1,0 @@
-file_name,network,station,instrument_type,station_lat,station_lon,station_elv,event_start_time,event_end_time,detection_probability,detection_uncertainty,p_arrival_time,p_probability,p_uncertainty,p_snr,s_arrival_time,s_probability,s_uncertainty,s_snr
-AKOS_GH_HH_2012-10-09T12:04:00.000000Z,GH,AKOS,HH,6.2984,0.0681,217.0,2012-10-09 12:04:08.410000,2012-10-09 12:04:13.120000,0.66,,2012-10-09 12:04:09.960000,0.23,,0.5,2012-10-09 12:04:11.730000,0.58,,8.1
-AKOS_GH_HH_2012-10-09T12:04:00.000000Z,GH,AKOS,HH,6.2984,0.0681,217.0,2012-10-09 12:04:26.270000,2012-10-09 12:04:28.260000,0.27,,,,,0.5,2012-10-09 12:04:27.440000,0.09,,8.1
-AKOS_GH_HH_2012-10-09T12:04:00.000000Z,GH,AKOS,HH,6.2984,0.0681,217.0,2012-10-09 12:04:56.200000,2012-10-09 12:04:59.990000,0.58,,2012-10-09 12:04:57.070000,0.09,,0.5,2012-10-09 12:04:58.990000,0.41,,8.1

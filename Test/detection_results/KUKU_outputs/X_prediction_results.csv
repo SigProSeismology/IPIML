@@ -1,2 +1,0 @@
-file_name,network,station,instrument_type,station_lat,station_lon,station_elv,event_start_time,event_end_time,detection_probability,detection_uncertainty,p_arrival_time,p_probability,p_uncertainty,p_snr,s_arrival_time,s_probability,s_uncertainty,s_snr
-KUKU_GH_HH_2012-10-09T12:05:30.000000Z,GH,KUKU,HH,6.1924,-0.3687,240.0,2012-10-09 12:05:57.830000,2012-10-09 12:06:09.060000,0.91,,2012-10-09 12:05:57.900000,0.83,,14.7,2012-10-09 12:06:05.850000,0.68,,11.5
