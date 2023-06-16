@@ -99,7 +99,7 @@
         "tt": {
             "vmodel": "./OnDiskData/velocity_ghana.txt",
             "dir": "traveltime/tt_1km",
-            "build": false
+            "build": true
         },
         "detect": {
             "twind_srch": 180,

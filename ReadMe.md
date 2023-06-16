@@ -8,49 +8,42 @@ IPIML is primarily developed and tested on Debian-based Linux OS systems. Theref
 
 We greatly value community contributions and are steadfastly committed to continuously addressing and resolving any bugs that arise in the repository. Should you encounter any issues, please don't hesitate to contact us.
 
-We implement the IPIML workflow in six steps, using two conda environments: ESR and MIL. Each environment serves a different purpose within the workflow, allowing for a clean and organized development process.
+We implement the IPIML workflow in six steps, using an IPIML conda environments:
 
 ## Installation
 The installation guides for these environments are provided below:
 
-# EQT-SEQT-REAL (ESR) envoronment:
-Create and activate a conda environment, ESR for detecting the primary events:
+# IPIML envoronment:
+Create and activate a conda environment, IPIML for detecting the primary events:
 If you want to process with CPU:
 ```bash
 conda config --add channels conda-forge
 conda config --set channel_priority strict
-conda create -n ESR python=3.7 tensorflow=1.14 keras=2.3.1 h5py=2.10 obspy spyder==5.0.3 pygmt matplotlib=3.2 pyyaml cudatoolkit cudnn pandas tqdm pyproj jupyter notebook basemap six~=1.15.0 numpy~=1.19.2 protobuf'<3.20,>=3.9.2'
-pip install keras-rectified-adam
+conda create -n IPIML python=3.9 tensorflow keras h5py obspy spyder pygmt matplotlib pyyaml pandas tqdm pyproj jupyter notebook basemap six numpy protobuf
+conda activate IPIML
+pip install keras-rectified-adam seisbench
 ```
 It you want to process with GPU:
 
 ```bash
 conda config --add channels conda-forge
 conda config --set channel_priority strict
-conda create -n ESR python=3.7 tensorflow-gpu=1.14 keras-gpu=2.3.1 h5py=2.10 obspy spyder==5.0.3 pygmt matplotlib=3.2 pyyaml pandas tqdm pyproj jupyter notebook basemap six~=1.15.0 numpy~=1.19.2 protobuf'<3.20,>=3.9.2'
-pip install keras-rectified-adam
-```
-# MIGRATION LOCATION (MIL) envoronment:
-Create and activate a conda environment, MIL for locating the primary events:
-```bash
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-conda create -n MIL python=3.9 pygmt
-conda activate MIL
-pip install seisbench
+conda create -n IPIML python=3.9 tensorflow-gpu keras-gpu h5py obspy spyder pygmt matplotlib pyyaml cudatoolkit cudnn pandas tqdm pyproj jupyter notebook basemap six numpy protobuf
+conda activate IPIML
+pip install keras-rectified-adam seisbench
 ```
 
 ### Install loki (GNU gcc compiler and openmp required)
 ```bash
 git clone https://github.com/speedshi/LOKI.git
-conda activate MIL
+conda activate IPIML
 cd WHERE_LOKI_IS_STORED
 pip install .
 ```
 
 ### Install IPIML 
 ```bash
-git clone https://github.com/speedshi/MALMI.git](https://github.com/SigProSeismology/IPIML.git
+git clone https://github.com/SigProSeismology/IPIML.git](https://github.com/SigProSeismology/IPIML.git
 ```
 
 ## Usage 

@@ -3,13 +3,12 @@
 """
 Created on March 2023
 
-@authors: Xiao Zhuowei
+@authors: Xiao Zhuowei, Hamzeh Mohammadigheymasi
 """
 
 """
 Runs S-EQT on a station pairwise manner on other stations when the main station detects a phase with a probability > 0.8
 """
-
 
 import numpy as np
 from pathlib import Path
@@ -30,7 +29,20 @@ import json
 import yaml
 import os
 import argparse
+import tensorflow as tf
 
+def set_gpu_memory_fraction(gpu_fraction):
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            tf.config.set_logical_device_configuration(
+                gpus[0],
+                [tf.config.LogicalDeviceConfiguration(memory_limit=gpus[0].memory_limit * gpu_fraction)])
+            logical_gpus = tf.config.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+        except RuntimeError as e:
+            # Virtual devices must be set at program startup
+            print(e)
 
 # Simplified steps:
 # 01 load config file
@@ -47,12 +59,7 @@ if __name__ == '__main__':
     task_dir = './' + cfgs['Project'] + '/'
     os.chdir(task_dir)
 
-    import tensorflow as tf
-    import keras.backend.tensorflow_backend as KTF
-    def get_session(gpu_fraction=0.5):
-        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=gpu_fraction)
-        return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-    KTF.set_session(get_session())
+    set_gpu_memory_fraction(0.5)
 
     # build phase dict using EqT results
     phase_dict, station_list = build_phase_dict_from_EqT(cfgs)

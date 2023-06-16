@@ -30,13 +30,9 @@ from scipy import signal
 from matplotlib.lines import Line2D
 warnings.filterwarnings("ignore")
 from tensorflow.python.util import deprecation
+from keras_radam import RAdam
 from keras.initializers import Constant
 deprecation._PRINT_DEPRECATION_WARNINGS = False
-
-def set_shape_after_concate(set_shape_tensor, channel_num):
-    set_shape_tensor.set_shape([set_shape_tensor.shape[0],set_shape_tensor.shape[1],set_shape_tensor.shape[2], int(channel_num)])
-    return set_shape_tensor
-         
 
 def feature_map_corr_func(inputs):
     # get batch size for split tensor
@@ -103,7 +99,6 @@ def build_corr_model(cfgs, EqT_model):
     S_EqT_Output_list = []
     for idx, encoded_name in enumerate(encoded_list):
         feature_corr_dict[encoded_name+'_corr']  = feature_map_corr_layer(encoded_name+'_corr',(int(encoded_lengths[idx]),1,int(encoded_channels[idx])))([S_EqT_Input_dict[encoded_name+'_Template'],S_EqT_Input_dict[encoded_name+'_Search'] ])
-        feature_corr_dict[encoded_name+'_corr'].set_shape([feature_corr_dict[encoded_name+'_corr'].shape[0], int(encoded_lengths[idx]),1,int(encoded_channels[idx])])
         S_EqT_Output_list.append(feature_corr_dict[encoded_name+'_corr'])
     model_corr = Model(inputs = S_EqT_Input_list, outputs = S_EqT_Output_list)
 
@@ -176,32 +171,14 @@ def S_EqT_Concate_RSRN_Model(cfgs):
             corr_res = feature_map_corr_layer(encoded_name+'_corr',
                                                 (int(encoded_lengths[idx]),
                                                 1,int(encoded_channels[idx])))([S_EqT_Input_dict[encoded_name+'_Template'],S_EqT_Input_dict[encoded_name+'_Search'] ])
-            
-            corr_res.set_shape([corr_res.shape[0], int(encoded_lengths[idx]),1,int(encoded_channels[idx])])
             #corr_res = BatchNormalization()(corr_res)
             feature_corr_dict[encoded_name+'_corr'] = Concatenate(axis=-1)([corr_res,S_EqT_Input_dict[encoded_name+'_Search']])
-           
-            corr_res_channel_num = corr_res.shape[-1]
-            s_eqt_input_search_channel_num = S_EqT_Input_dict[encoded_name+'_Search'].shape[-1]
-            
-            #print( corr_res.shape )
-            #print( S_EqT_Input_dict[encoded_name+'_Search'].shape )
-            
-            concate_channel_num = corr_res_channel_num + s_eqt_input_search_channel_num
-
-
-
-
-            feature_corr_dict[encoded_name+'_corr'] = set_shape_after_concate(feature_corr_dict[encoded_name+'_corr'], channel_num=concate_channel_num)
         else:
             feature_corr_dict[encoded_name+'_corr'] = feature_map_corr_layer(encoded_name+'_corr',
                                                 (int(encoded_lengths[idx]),
                                                 1,int(encoded_channels[idx])))([S_EqT_Input_dict[encoded_name+'_Template'],S_EqT_Input_dict[encoded_name+'_Search'] ])
-            feature_corr_dict[encoded_name+'_corr'].set_shape([feature_corr_dict[encoded_name+'_corr'].shape[0], int(encoded_lengths[idx]),1,int(encoded_channels[idx])])
-            
             #feature_corr_dict[encoded_name+'_corr'] = BatchNormalization()(corr_res)
-
-    final_concate_channel_num = 0
+    
     if if_encoder_concate == 1:
         encoder_concate_list = list()
         for idx, encoded_name in enumerate(encoder_encoded_list):
@@ -210,29 +187,15 @@ def S_EqT_Concate_RSRN_Model(cfgs):
                                                     (int(encoder_encoded_lengths[idx]),
                                                     1,int(encoder_encoded_channels[idx])))([S_EqT_Input_dict[encoded_name+'_Template'],S_EqT_Input_dict[encoded_name+'_Search'] ])
                 #corr_res = BatchNormalization()(corr_res)
-                corr_res.set_shape([corr_res.shape[0], int(encoder_encoded_lengths[idx]),1,int(encoder_encoded_channels[idx])])
                 feature_corr_dict[encoded_name+'_corr'] = Concatenate(axis=-1)([corr_res,S_EqT_Input_dict[encoded_name+'_Search']])
-
-                corr_res_channel_num = corr_res.shape[-1]
-                s_eqt_input_search_channel_num = S_EqT_Input_dict[encoded_name+'_Search'].shape[-1]
-                concate_channel_num = corr_res_channel_num + s_eqt_input_search_channel_num
-
-                feature_corr_dict[encoded_name+'_corr'] = set_shape_after_concate(feature_corr_dict[encoded_name+'_corr'], channel_num=concate_channel_num)   
-
             else:
                 feature_corr_dict[encoded_name+'_corr']  = feature_map_corr_layer(encoded_name+'_corr',
                                                     (int(encoder_encoded_lengths[idx]),
                                                     1,int(encoder_encoded_channels[idx])))([S_EqT_Input_dict[encoded_name+'_Template'],S_EqT_Input_dict[encoded_name+'_Search'] ])
-                feature_corr_dict[encoded_name+'_corr'].set_shape([feature_corr_dict[encoded_name+'_corr'].shape[0], int(encoder_encoded_lengths[idx]),1,int(encoder_encoded_channels[idx])])
-            
+
             encoder_concate_list.append(feature_corr_dict[encoded_name+'_corr'])
-            #print( feature_corr_dict[encoded_name+'_corr'].shape[-1] )
-            final_concate_channel_num = final_concate_channel_num + feature_corr_dict[encoded_name+'_corr'].shape[-1]
-            #print(final_concate_channel_num)
-
+    
         encoder_list_concate_final = Concatenate(axis=-1)(encoder_concate_list)
-        encoder_list_concate_final = set_shape_after_concate(encoder_list_concate_final, final_concate_channel_num)
-
         side_conv = Conv2D(512,(3,1),padding='same')(encoder_list_concate_final)
         side_conv = Conv2D(256,(3,1),padding='same')(side_conv)
         side_conv = Conv2D(128,(3,1),padding='same')(side_conv)
@@ -258,12 +221,6 @@ def S_EqT_Concate_RSRN_Model(cfgs):
         if idx == 0:
             if if_encoder_concate == 1:
                 side_concate = Concatenate(axis=-1)([feature_corr_dict[encoded_name+'_corr'],side_conv])
-
-                feature_corr_dict_channel_num = feature_corr_dict[encoded_name+'_corr'].shape[-1]
-                side_conv_channel_num = side_conv.shape[-1]
-                concate_channel_num = feature_corr_dict_channel_num + side_conv_channel_num
-                side_concate = set_shape_after_concate(side_concate, concate_channel_num)
-
                 side_conv = Conv2D(32,(3,1),padding='same')(side_concate)
             else:
                 side_conv = Conv2D(32,(3,1),padding='same')(feature_corr_dict[encoded_name+'_corr'])
@@ -302,13 +259,6 @@ def S_EqT_Concate_RSRN_Model(cfgs):
                 residual = Cropping2D(cropping=((res_cropping,res_cropping),(0,0)))(residual)
 
             side_concat = Concatenate(axis=-1)([side_conv, residual])
-
-            side_conv_channel_num = side_conv.shape[-1]
-            residual_channel_num = residual.shape[-1]
-            concate_channel_num = side_conv_channel_num + residual_channel_num
-
-            side_concat = set_shape_after_concate(side_concat, concate_channel_num)
-
             side_conv = Conv2D(8,(1,1),padding='same')(side_concat)
            # get upscale
             upscale = int(sideoutput_upscales[idx])
@@ -339,14 +289,6 @@ def S_EqT_Concate_RSRN_Model(cfgs):
                 residual = Cropping2D(cropping=((res_cropping,res_cropping),(0,0)))(residual)
 
             side_concat = Concatenate(axis=-1)([side_conv, residual])
-
-            side_conv_channel_num = side_conv.shape[-1]
-            residual_channel_num = residual.shape[-1]
-            concate_channel_num = side_conv_channel_num + residual_channel_num
-
-            side_concat = set_shape_after_concate(side_concat, concate_channel_num)
-
-
             side_conv = Conv2D(16,(1,1),padding='same')(side_concat)
 
             side_residual_dict[encoded_name+'_resiudal'] = Lambda(lambda x: x[:,:,:,0:8]) (side_conv)
@@ -367,10 +309,6 @@ def S_EqT_Concate_RSRN_Model(cfgs):
             output_list_siamese.append(sideoutput_dict[encoded_name+'_sideoutput'])
     # fuse all
     fuse = Concatenate(axis=-1)(stage_output_list_siamese)
-
-    concate_channel_num = len(stage_output_list_siamese)
-    fuse = set_shape_after_concate(fuse, concate_channel_num)
-
     f_conv_start_weight = 1.0/(float(len(stage_output_list_siamese)))
     f_conv_init = Constant(f_conv_start_weight)
     fuse = Conv2D(1, (1,1), padding='same', activation='sigmoid',kernel_initializer=f_conv_init)(fuse)
@@ -384,7 +322,10 @@ def S_EqT_Concate_RSRN_Model(cfgs):
     loss_weights_cfgs = cfgs['Model']['Loss_weights']
     for l_w in loss_weights_cfgs:
         loss_weights.append(float(l_w))
-
+    """
+    model_siamese.compile(loss='binary_crossentropy',
+                            optimizer=RAdam(0.0003))
+    """
     model_siamese.compile(loss='binary_crossentropy',
                             optimizer='adam')
     return model_encoded, model_siamese, EqT_model
