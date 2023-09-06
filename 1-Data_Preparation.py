@@ -544,7 +544,7 @@ if __name__ == '__main__':
                        max_lon=MAXLON,
                        chunk_size=1,
                        channel_list=CHANLIST,
-                       n_processor=1)
+                       n_processor=8)
         # remove empty folders
         mseed_path = Path(DATASAVEPATH)
         for sub_path in mseed_path.glob('*'):
