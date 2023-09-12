@@ -7,7 +7,7 @@
         "sta_json_name": "station_list.json",
         "data_save_name": "ori_data",
         "DataDownload": {
-            "channel_list": ["HH[ZNE]", "HH[Z21]", "BH[ZNE]", "BH[Z21]", "EH[ZNE]", "EH[Z21]", "SH[Z21]", "SH[ZNE]", "HN[ZNE]", "HN[Z23]"],
+            "channel_list": ["HH[ZNE]", "HH[Z21]", "BH[ZNE]", "BH[Z21]", "EH[ZNE]", "EH[Z21]", "SH[Z21]", "SH[ZNE]", "HN[ZNE]", "HN[Z23]", "SL[Z21]", "EL[Z21]",  "EX[Z21]"],
             "exclude_network": ["SY", "AF"],
             "minlat": 5.0,
             "maxlat": 8.0,
