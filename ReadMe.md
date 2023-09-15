@@ -62,12 +62,16 @@ BibTex:
 ```
 
 @article{mohammadigheymasi2023ipiml,
-  title={IPIML: A deep-scan earthquake detection and location workflow Integrating Pair-Input deep learning model and Migration Location method},
-  author={Mohammadigheymasi, Hamzeh and Shi, Peidong and Tavakolizadeh, Nasrin and Xiao, Zhuowei and Mousavi, S Mostafa and Matias, Luis and Pourvahab, Mehran and Fernandes, Rui},
-  journal={IEEE Transactions on Geoscience and Remote Sensing},
+  author={Mohammadigheymasi, Hamzeh and Shi, Peidong and Tavakolizadeh, Nasrin and Xiao, Zhuowei and Mousavi, S. Mostafa and Matias, Luis and Pourvahab, Mehran and Fernandes, Rui},
+  journal={IEEE Transactions on Geoscience and Remote Sensing}, 
+  title={IPIML: A Deep-Scan Earthquake Detection and Location Workflow Integrating Pair-Input Deep Learning Model and Migration Location Method},
+  publisher={IEEE},
   year={2023},
-  publisher={IEEE}
-}
+  volume={61},
+  number={},
+  pages={1-9},
+  doi={10.1109/TGRS.2023.3293914}}
+
 
 @article{xiao2021siamese,
   title={Siamese earthquake transformer: A pair-input deep-learning model for earthquake detection and phase picking on a seismic array},
