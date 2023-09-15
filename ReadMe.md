@@ -19,8 +19,8 @@ If you want to process with CPU:
 ```bash
 conda config --add channels conda-forge
 conda config --set channel_priority strict
-conda create -n IPIMLL python=3.9 tensorflow==2.11.1 keras==2.11.0 h5py obspy spyder pygmt matplotlib pyyaml pandas tqdm pyproj jupyter notebook basemap six numpy protobuf
-conda activate IPIMLL
+conda create -n IPIML python=3.9 tensorflow==2.11.1 keras==2.11.0 h5py obspy spyder pygmt matplotlib pyyaml pandas tqdm pyproj jupyter notebook basemap six numpy protobuf
+conda activate IPIML
 pip install keras-rectified-adam seisbench
 ```
 It you want to process with GPU:
