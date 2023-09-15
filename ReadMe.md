@@ -60,15 +60,13 @@ In case you utilize IPIML for processing your data, it would be appreciated if y
 
 BibTex:
 ```
+
 @article{mohammadigheymasi2023ipiml,
   title={IPIML: A deep-scan earthquake detection and location workflow Integrating Pair-Input deep learning model and Migration Location method},
-  author={Mohammadigheymasi, Hamzeh and Shi, Peidong and Tavakolizadeh, Nasrin and Xiao, Zhuowei and Mousavi, S. Mostafa and Matias, Luis and Pourvahab, Mehran and Fernandes, Rui},
+  author={Mohammadigheymasi, Hamzeh and Shi, Peidong and Tavakolizadeh, Nasrin and Xiao, Zhuowei and Mousavi, S Mostafa and Matias, Luis and Pourvahab, Mehran and Fernandes, Rui},
   journal={IEEE Transactions on Geoscience and Remote Sensing},
-  volume={XX},
-  number={XX},
-  pages={XX--XX},
   year={2023},
-  doi={XX.XXXX/XXXXXXX}
+  publisher={IEEE}
 }
 
 @article{xiao2021siamese,
